@@ -1,0 +1,7 @@
+venv
+__pycache__
+.idea
+.DS_Store
+output
+local
+models
