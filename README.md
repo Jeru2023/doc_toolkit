@@ -19,3 +19,7 @@
    ```sh
    install -r requirements.txt
    ```
+4. Download the Spacy Engnlish model.
+   ```sh
+   python -m spacy download en_core_web_sm
+   ```
