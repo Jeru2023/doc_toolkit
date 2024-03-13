@@ -24,14 +24,14 @@
    python -m spacy download en_core_web_sm
    ```
 5. Install pytorch<br>
-   For non-GPU device
+   For non-GPU device:
    ```sh
    pip install torch
    ```
 
-   For GPU device<br>
+   For GPU device:<br>
    Run 'nvidia-smi' to find out your CUDA version, for example my version is 12.1<br>
-   Then I should run below command to install pytorch with CUDA:
+   Then I should run below command to install pytorch with CUDA.
    ```sh
    pip install torch --pre -f https://download.pytorch.org/whl/nightly/cu121/torch_nightly.html
    ```
