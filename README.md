@@ -27,11 +27,11 @@
    For non-GPU device
    ```sh
    pip install torch
-   ```sh
+   ```
 
    For GPU device
    Run 'nvidia-smi' to find out your CUDA version, for example my version is 12.1
    Then I should run below command to install pytorch with CUDA:
    ```sh
    pip install torch --pre -f https://download.pytorch.org/whl/nightly/cu121/torch_nightly.html
-   ```sh
+   ```
