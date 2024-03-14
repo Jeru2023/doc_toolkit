@@ -30,7 +30,7 @@ These statistics can be used to automatically determine the appropriate segmenta
    ```
 3. Install packages
    ```sh
-   install -r requirements.txt
+   pip install -r requirements.txt
    ```
 4. Download the Spacy English model.
    ```sh
