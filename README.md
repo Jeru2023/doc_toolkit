@@ -2,6 +2,9 @@
 ## About The Project
 
 ### Paragraph Segementation
+#### Segment Methods
+
+
 #### Segement Router
 Before segmentation, first calculate:<br>
 <li>the length of the article</li>
