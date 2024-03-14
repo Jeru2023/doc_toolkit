@@ -23,13 +23,16 @@ class Router:
         # 计算每个句子的长度
         sentence_lengths = [len(s) for s in sentences]
         # 计算每个段落的长度
-        paragraph_lengths = [len(p) for p in paragraphs]
+        paragraph_lengths = [len(p['paragraph']) for p in paragraphs]
 
         # std threshold as 50
         # Calculate the standard deviation of the sentence lengths
         sentence_std = np.std(sentence_lengths)
         # Calculate the standard deviation of the paragraph lengths
         paragraph_std = np.std(paragraph_lengths)
+
+        sentence_mean = np.mean(sentence_lengths)
+        paragraph_mean = np.mean(paragraph_lengths)
 
         print("Text total length:", text_len)
         print("Sentences size:", sentences_count)
@@ -38,11 +41,14 @@ class Router:
         print("Average sentence length:", avg_sentence_len)
         print("Average paragraph length:", avg_paragraph_len)
 
+        print("Mean sentence length:", sentence_mean)
+        print("Mean paragraph length:", paragraph_mean)
+
         print("Sentence length standard deviation:", sentence_std)
         print("Paragraph length standard deviation:", paragraph_std)
 
         # 1. if performance is the key -> rule based cut
-        # 1.1 if std<50 and avg_sentence_len between 300 and 800 -> natural cut
+        # 1.1 if std<50 and avg_paragraph_len between 300 and 800 -> natural cut
         # 1.2 else force_cut - how to decide chunk size?
         #
         # 2. else semantic based cut
