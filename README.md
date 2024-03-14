@@ -8,7 +8,7 @@ Before segmentation, first calculate:<br>
 <li>the average sentence length</li>
 <li>the average paragraph length</li>
 <li>the variance of sentence lengths and paragraph lengths. </li>
-
+<br>
 These statistics can be used to automatically determine the appropriate segmentation method.
 
 <!-- GETTING STARTED -->
