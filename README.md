@@ -47,5 +47,6 @@ These statistics can be used to automatically determine the appropriate segmenta
    ```
 6. Fix bert nlp seg model bug for chinese text<br>
    If you encounter issues with the handling of English periods (full stops) during sentence segmentation in Chinese text, and you need to manually fix it, you can modify the sentence segmentation function in the local installation package. <br>
+   
    Specifically, you can make changes to the cut_sentence function in <b>modelscope.pipelines.nlp.document_segmentation_pipeline</b>.<br>
    To address the problem, <b>remove the decimal point from the first regular expression in the function</b>. <br>This modification should help improve the handling of English periods during sentence segmentation in Chinese text.
