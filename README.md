@@ -21,7 +21,7 @@ These statistics can be used to automatically determine the appropriate segmenta
 
 1. Create independent Python Environment.
    ```sh    
-    conda create -n doc python=3.9
+    conda create -n doc python=3.9.17
     conda activate doc
    ```
 2. Clone the repo
@@ -30,7 +30,7 @@ These statistics can be used to automatically determine the appropriate segmenta
    ```
 3. Install packages
    ```sh
-   install -r requirements.txt
+   pip install -r requirements.txt
    ```
 4. Download the Spacy English model.
    ```sh
