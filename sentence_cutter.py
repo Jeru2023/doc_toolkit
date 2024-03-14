@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 from langdetect import detect
-from sentence_spliter.logic_graph_en import long_cuter_en
-from sentence_spliter.automata.state_machine import StateMachine
-from sentence_spliter.automata.sequence import EnSequence
-from sentence_spliter.logic_graph import long_short_cuter
-from sentence_spliter.automata.sequence import StrSequence
+from sentence_splitter.logic_graph_en import long_cuter_en
+from sentence_splitter.automata.state_machine import StateMachine
+from sentence_splitter.automata.sequence import EnSequence
+from sentence_splitter.logic_graph import long_short_cuter
+from sentence_splitter.automata.sequence import StrSequence
 import spacy
 from utils import timer
 
