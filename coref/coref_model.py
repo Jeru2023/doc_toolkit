@@ -41,11 +41,11 @@ def predict(config, input_text):
     :param config: 配置参数
     :return: None
     """
-    vocab_file = utils.get_root_path() + '/models/trained_models/' + config['vocab_file']
+    vocab_file = utils.get_root_path() + '/models/' + config['vocab_file']
     tokenizer = BertTokenizer.from_pretrained(vocab_file, do_lower_case=True)
 
     coref_dict = create_example(input_text, tokenizer)
-    model_save_path = utils.get_root_path() + '/models/trained_models/' + config["model_save_path"]
+    model_save_path = utils.get_root_path() + '/models/' + config["model_save_path"]
     model = CorefModel.from_pretrained(model_save_path, coref_task_config=config)
     model.to(device)
 
@@ -126,10 +126,8 @@ if __name__ == "__main__":
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
     os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 
-    run_experiment = "bert_base_chinese"
-    config = utils.read_config(run_experiment, "experiments.conf")
-    report_frequency = config["report_frequency"]
-    eval_frequency = config["eval_frequency"]
+    config_category = "bert_base_chinese"
+    config = utils.read_config(config_category, "config.conf")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if torch.cuda.is_available():

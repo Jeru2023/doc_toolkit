@@ -57,7 +57,7 @@ class CorefModel(BertPreTrainedModel):
         self.subtoken_maps = {}
         self.gold = {}
         self.eval_data = None
-        self.root_path =  get_root_path() + "/models/trained_models/"
+        self.root_path =  get_root_path() + "/models/"
         self.bert_config = modeling.BertConfig.from_json_file(self.root_path + self.config["bert_config_file"])
         self.tokenizer = BertTokenizer.from_pretrained(self.root_path + self.config['vocab_file'],
                                                        do_lower_case=True)
