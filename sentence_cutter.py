@@ -7,7 +7,7 @@ from sentence_splitter.automata.sequence import EnSequence
 from sentence_splitter.logic_graph import long_short_cuter
 from sentence_splitter.automata.sequence import StrSequence
 import spacy
-from utils import timer
+from tools.utils import timer
 
 
 class SentenceCutter:

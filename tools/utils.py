@@ -1,9 +1,11 @@
 import time
 import os
-from collections.abc import Sequence
+import torch
+import pyhocon
 import pkg_resources
 
 from loguru import logger
+from collections.abc import Sequence
 
 
 def timer(func):
@@ -69,3 +71,22 @@ def get_root_path():
     package_path = pkg_resources.resource_filename(__name__, "")
     parent_path = os.path.dirname(package_path)
     return parent_path
+
+
+def to_cuda(x):
+    """ GPU-enable a tensor """
+    if torch.cuda.is_available():
+        x = x.cuda()
+    return x
+
+
+def flatten(_list):
+    """展平list"""
+    return [item for sublist in _list for item in sublist]
+
+
+def read_config(run_experiment, file_name):
+    """读取配置文件"""
+    name = str(run_experiment)
+    config = pyhocon.ConfigFactory.parse_file(file_name)[name]
+    return config
