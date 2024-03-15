@@ -108,7 +108,5 @@ def to_cuda(x):
     device = get_device()
     if device == "cuda":
         return x.cuda()
-    elif device == "mps":
-        return x.to("mps")
     else:
         return x
