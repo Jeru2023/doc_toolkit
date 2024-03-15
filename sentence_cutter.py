@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 from langdetect import detect
 
-from paragraph_cutter import ParagraphCutter
 from sentence_splitter.logic_graph_en import long_cuter_en
 from sentence_splitter.automata.state_machine import StateMachine
 from sentence_splitter.automata.sequence import EnSequence
