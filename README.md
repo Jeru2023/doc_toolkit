@@ -1,7 +1,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-### Paragraph Segementation
+### Sentence Segement
+### Paragraph Segement
 #### Segment Methods
 
 
@@ -13,6 +14,10 @@ Before segmentation, first calculate:<br>
 <li>the variance of sentence lengths and paragraph lengths. </li>
 <br>
 These statistics can be used to automatically determine the appropriate segmentation method.
+
+### Coreference Resolution
+
+
 
 <!-- GETTING STARTED -->
 ## Getting Started
