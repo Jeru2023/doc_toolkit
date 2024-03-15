@@ -4,7 +4,14 @@
 ### Sentence Segement
 ### Paragraph Segement
 #### Segment Methods
-
+1. Natural Cut<br>
+   Content splitted by '\n'
+   
+3. Brutal Cut<br>
+   Content splitted by specified chunk size
+   
+5. Senantic Cut<br>
+   Content splitted by bert senmantic model, best effect but also time consuming.
 
 #### Segement Router
 Before segmentation, first calculate:<br>
@@ -16,8 +23,7 @@ Before segmentation, first calculate:<br>
 These statistics can be used to automatically determine the appropriate segmentation method.
 
 ### Coreference Resolution
-
-
+Get "trained_coref_model" from Jeru and place it in "models" folder.
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -57,4 +63,19 @@ These statistics can be used to automatically determine the appropriate segmenta
    If you encounter issues with the handling of English periods (full stops) during sentence segmentation in Chinese text, and you need to manually fix it, you can modify the sentence segmentation function in the local installation package. <br>
    
    Specifically, you can make changes to the cut_sentence function in <b>modelscope.pipelines.nlp.document_segmentation_pipeline</b>.<br>
-   To address the problem, <b>remove the decimal point from the first regular expression in the function</b>. 
+   To address the problem, <b>remove the decimal point from the first regular expression in the function</b>.
+
+## Usage
+
+### Coreference Resolution
+```python
+from coref.coref_model import CorefModel
+
+coref_model = CorefModel()
+content = "some text input..."
+coref_dict = coref_model.predict(content)
+
+print(content)
+# check verbose detail printed out in friendly version
+print(coref_model.show_verbose(coref_dict))
+```
