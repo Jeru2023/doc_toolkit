@@ -10,12 +10,14 @@ from functools import cmp_to_key
 
 # 项目模块
 # import utils
-from tools.utils import to_cuda, flatten, get_root_path
+from tools.utils import to_cuda, flatten, get_root_path, get_device
 
 from bert import modeling
 from bert.tokenization import BertTokenizer
 from bert.modeling import BertPreTrainedModel
 from bert.modeling import BertModel
+
+torch.set_default_device(get_device())
 
 
 class Squeezer(nn.Module):
@@ -45,10 +47,10 @@ class Score(nn.Module):
         return output
 
 
-class CorefModel(BertPreTrainedModel):
+class Coreference(BertPreTrainedModel):
 
     def __init__(self, config, coref_task_config):
-        super(CorefModel, self).__init__(config)
+        super(Coreference, self).__init__(config)
 
         self.config = coref_task_config
         self.max_segment_len = self.config['max_segment_len']
@@ -142,13 +144,13 @@ class CorefModel(BertPreTrainedModel):
         num_words = torch.tensor(mention_doc.shape[0])  # [batch_size*seg_len]
         # 根据最大子串长度，获得候选子串
         flattened_sentence_indices = sentence_map  # num_word
-        candidate_starts = torch.arange(num_words).view(-1, 1).repeat(1,
-                                                                      self.max_span_width)  # [num_words_len, max_span_width]
-        candidate_ends = candidate_starts + torch.arange(self.max_span_width).view(1,
-                                                                                   -1)  # [num_words_len, max_span_width]
+
+        candidate_starts = torch.arange(num_words).view(-1, 1).repeat(1, self.max_span_width)  # [num_words_len, max_span_width]
+        candidate_ends = candidate_starts + torch.arange(self.max_span_width).view(1, -1)  # [num_words_len, max_span_width]
+
         # 句子开始、结束索引
-        candidate_start_sentence_indices = flattened_sentence_indices[
-            candidate_starts]  # [num_words_len, max_span_width]
+        candidate_start_sentence_indices = flattened_sentence_indices[candidate_starts]  # [num_words_len, max_span_width]
+
         candidate_end_sentence_indices = flattened_sentence_indices[
             torch.clamp(candidate_ends, max=num_words - 1)]  # [num_words_len, max_span_width]
         # torch.min(candidate_ends, 225*torch.ones([candidate_ends.shape[0], candidate_ends.shape[1]]).long())
@@ -159,6 +161,7 @@ class CorefModel(BertPreTrainedModel):
 
         candidate_starts = candidate_starts.view(-1)[flattened_candidate_mask]  # [num_candidates]
         candidate_ends = candidate_ends.view(-1)[flattened_candidate_mask]  # [num_candidates]
+
         # 候选簇
         if is_training:
             candidate_cluster_ids = self.get_candidate_labels(candidate_starts, candidate_ends,
@@ -439,7 +442,7 @@ class CorefModel(BertPreTrainedModel):
     @staticmethod
     def extract_top_spans(span_scores, cand_start_idxes, cand_end_idxes, top_span_num):
         """获得前k个短语"""
-
+        device = get_device()
         sorted_span_idxes = torch.argsort(span_scores, descending=True).tolist()
 
         top_span_idxes = []
@@ -490,7 +493,7 @@ class CorefModel(BertPreTrainedModel):
 
         top_span_idxes.sort(key=cmp_to_key(compare_span_idxes))
 
-        return torch.Tensor(top_span_idxes) + torch.tensor(top_span_idxes[0]) * (top_span_num - selected_span_num)
+        return torch.Tensor(top_span_idxes).to(device) + torch.tensor(top_span_idxes[0]).to(device) * (top_span_num - selected_span_num)
 
     def coarse_to_fine_pruning(self, top_span_emb, top_span_mention_scores, c):
         """计算前c个得分"""
@@ -620,7 +623,7 @@ class CorefModel(BertPreTrainedModel):
     def get_predicted_antecedents(antecedents, antecedent_scores):
         """获得预测的前值簇"""
         predicted_antecedents = []
-        for i, index in enumerate(np.argmax(antecedent_scores, axis=1) - 1):
+        for i, index in enumerate(np.argmax(antecedent_scores.cpu(), axis=1) - 1):
             if index < 0:
                 predicted_antecedents.append(-1)
             else:

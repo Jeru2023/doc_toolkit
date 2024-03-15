@@ -73,13 +73,6 @@ def get_root_path():
     return parent_path
 
 
-def to_cuda(x):
-    """ GPU-enable a tensor """
-    if torch.cuda.is_available():
-        x = x.cuda()
-    return x
-
-
 def flatten(_list):
     """展平list"""
     return [item for sublist in _list for item in sublist]
@@ -90,3 +83,32 @@ def read_config(run_experiment, file_name):
     name = str(run_experiment)
     config = pyhocon.ConfigFactory.parse_file(file_name)[name]
     return config
+
+
+def get_device():
+    """
+    Get the current device (MPS, CPU, or GPU).
+
+    Returns:
+        str: The current device.
+    """
+
+    if torch.cuda.is_available():
+        device = "cuda"
+    elif torch.backends.mps.is_available():
+        device = "mps"
+    else:
+        device = "cpu"
+
+    return device
+
+
+def to_cuda(x):
+    """ GPU-enable a tensor """
+    device = get_device()
+    if device == "cuda":
+        return x.cuda()
+    elif device == "mps":
+        return x.to("mps")
+    else:
+        return x
