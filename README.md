@@ -71,6 +71,13 @@ Get "trained_coref_model" from Jeru and place it in "models" folder.
    ```
 
 ## Usage
+### Sentence Split
+
+### Paragraph Split
+
+### Entity Extraction
+
+### Clustering
 
 ### Coreference Resolution
 ```python
