@@ -1,6 +1,7 @@
 from modelscope.pipelines import pipeline
 from modelscope.utils.constant import Tasks
 from tools.utils import timer
+from metadata_extractor.tag_extractor import TagExtractor
 
 MODEL_PATH = 'damo/nlp_structbert_sentence-similarity_chinese-base'
 
@@ -34,6 +35,10 @@ if __name__ == '__main__':
 
     ss = SentenceSimilarity()
     print(ss.compare(content_a1, content_a2))
+
+    tag_extractor = TagExtractor()
+    print(tag_extractor.extract(content_a1))
+    print(tag_extractor.extract(content_a2))
 
 
 

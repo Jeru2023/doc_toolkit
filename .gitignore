@@ -5,3 +5,6 @@ __pycache__
 output
 local
 models
+uie-base
+
+uie_base_pytorch
