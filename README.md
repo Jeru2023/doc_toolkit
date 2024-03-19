@@ -69,7 +69,8 @@ Get "trained_coref_model" from Jeru and place it in "models" folder.
 from paragraph_splitter.bert_nlp_doc_seg import BertSeg
 bs = BertSeg()
 
-results = pc.cut(doc2, with_tags=True, with_entities=True)
+content = "some text input..."
+results = bs.cut(content, with_tags=True, with_entities=True)
 
 for result in results:
     print(result["paragraph"])
