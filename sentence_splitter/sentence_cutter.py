@@ -43,7 +43,7 @@ class SentenceCutter:
             sentences = [sent.text for sent in doc.sents]
         else:
             return []
-        return sentences
+        return [s.strip() for s in sentences]
 
 
 if __name__ == '__main__':
@@ -64,4 +64,4 @@ if __name__ == '__main__':
     print('number of sentences:', len(sentences))
     for sentence in sentences:
         print('----------------')
-        print(sentence.strip())
+        print(sentence)
