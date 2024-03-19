@@ -47,7 +47,7 @@ Get "trained_coref_model" from Jeru and place it in "models" folder.
    ```sh
    python -m spacy download en_core_web_sm
    ```
-5. Install pytorch<br>
+5. Install pytorch manually<br>
    For non-GPU device:
    ```sh
    pip install torch
@@ -71,6 +71,13 @@ Get "trained_coref_model" from Jeru and place it in "models" folder.
    ```
 
 ## Usage
+### Sentence Split
+
+### Paragraph Split
+
+### Entity Extraction
+
+### Clustering
 
 ### Coreference Resolution
 ```python
