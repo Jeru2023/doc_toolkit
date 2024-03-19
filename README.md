@@ -59,17 +59,7 @@ Get "trained_coref_model" from Jeru and place it in "models" folder.
    ```sh
    pip install torch --pre -f https://download.pytorch.org/whl/nightly/cu121/torch_nightly.html
    ```
-6. Fix bert nlp seg model bug for chinese text<br>
-   If you encounter issues with the handling of English periods (full stops) during sentence segmentation in Chinese text, and you need to manually fix it, you can modify the sentence segmentation function in the local installation package. <br>
-   
-   Specifically, you can make changes to the cut_sentence function in <b>modelscope.pipelines.nlp.document_segmentation_pipeline</b>.<br>
-   To address the problem, <b>replace the first line regular expression in the function</b>.
-   ```sh
-   def cut_sentence(self, para):
-      # para = re.sub(r'([。！.!？\?])([^”’])', r'\1\n\2', para)  # noqa *
-      para = re.sub(r'([。！!？\?])([^”’])|(\.)([^”’\d])', r'\1\n\2', para)  # noqa *
-   ```
-7. Ask 宏宇老师 or Jeru for the NER finetune model, rename it to "uie_model_best" then put it in "models" folder
+6. Ask 宏宇老师 or Jeru for the NER finetune model, rename it to "uie_model_best" then put it in "models" folder
 
 ## Usage
 ### Sentence Split
