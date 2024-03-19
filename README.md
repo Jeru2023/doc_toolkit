@@ -75,7 +75,18 @@ Get "trained_coref_model" from Jeru and place it in "models" folder.
 ### Sentence Split
 
 ### Paragraph Split
+```python
+from paragraph_splitter.bert_nlp_doc_seg import BertSeg
+bs = BertSeg()
 
+results = pc.cut(doc2, with_tags=True, with_entities=True)
+
+for result in results:
+    print(result["paragraph"])
+    print(result["tags"])
+    print(result["entities"])
+    print('----------------')
+```
 ### Entity Extraction
 
 ### Clustering
