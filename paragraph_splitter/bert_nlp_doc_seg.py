@@ -3,14 +3,16 @@ from modelscope.outputs import OutputKeys
 from modelscope.pipelines import pipeline
 from modelscope.utils.constant import Tasks
 from metadata_extractor.tag_extractor import TagExtractor
+from metadata_extractor.entity_extractor import EntityExtractor
 import json
 
 
 class BertSeg:
     def __init__(self):
         self.tag_extractor = TagExtractor()
+        self.entity_extractor = EntityExtractor()
 
-    def cut(self, text, with_tags=False):
+    def cut(self, text, with_tags=False, with_entities=False):
         p = pipeline(
             task=Tasks.document_segmentation,
             model='damo/nlp_bert_document-segmentation_chinese-base')
@@ -25,6 +27,9 @@ class BertSeg:
             if with_tags:
                 tags = self.tag_extractor.extract(paragraph)
                 chunk["tags"] = tags
+            if with_tags:
+                entities = self.entity_extractor.extract(paragraph)
+                chunk["entities"] = entities
             chunks.append(chunk)
         return chunks
 
