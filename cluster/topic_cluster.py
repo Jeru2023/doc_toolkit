@@ -1,5 +1,6 @@
 from sklearn.feature_extraction.text import CountVectorizer
 import jieba
+import re
 from bertopic import BERTopic
 from sentence_transformers import SentenceTransformer
 
@@ -10,8 +11,10 @@ class TopicCluster:
 
     @staticmethod
     def tokenize_zh(text):
+        text = re.sub('\W*', '', text)
         words = jieba.lcut(text)
-        return ' '.join(words)
+        # return ' '.join(words)
+        return words
 
     def cluster(self, docs):
         content = '\n'.join(docs).strip()
