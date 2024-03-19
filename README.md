@@ -39,19 +39,15 @@ Get "trained_coref_model" from Jeru and place it in "models" folder.
    ```sh
    git clone git@github.com:Jeru2023/doc_toolkit.git
    ```
-3. Install UIE as submodule
-   ```sh
-   git clone add https://github.com/HUSTAI/uie_pytorch.git
-   ```
-4. Install packages
+3. Install packages
    ```sh
    pip install -r requirements.txt
    ```
-5. Download the Spacy English model.
+4. Download the Spacy English model.
    ```sh
    python -m spacy download en_core_web_sm
    ```
-6. Install pytorch manually<br>
+5. Install pytorch manually<br>
    For non-GPU device:
    ```sh
    pip install torch
@@ -73,7 +69,7 @@ Get "trained_coref_model" from Jeru and place it in "models" folder.
       # para = re.sub(r'([。！.!？\?])([^”’])', r'\1\n\2', para)  # noqa *
       para = re.sub(r'([。！!？\?])([^”’])|(\.)([^”’\d])', r'\1\n\2', para)  # noqa *
    ```
-7. Ask 宏宇老师 or Jeru for the NER finetune model, put it in "models" folder
+7. Ask 宏宇老师 or Jeru for the NER finetune model, rename it to "uie_model_best" then put it in "models" folder
 
 ## Usage
 ### Sentence Split
