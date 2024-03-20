@@ -45,7 +45,15 @@ class ParagraphCutter:
             if with_entities:
                 entity_extractor = EntityExtractor()
                 entities = entity_extractor.extract(paragraph)
-                chunk["entities"] = entities
+                entities_ = []
+                for item in entities:
+                    for key, values in item.items():
+                        count_dict = {}
+                        for value in values:
+                            text = value['text']
+                            count_dict[text] = count_dict.get(text, 0) + 1
+                        entities_.append({key: count_dict})
+                chunk["entities"] = entities_
             chunks.append(chunk)
 
         return chunks
