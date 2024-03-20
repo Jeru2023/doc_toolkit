@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
-from paragraph_splitter.natural_cutter import ParagraphCutter
+from paragraph_splitter.natural_cutter import NaturalCutter
 from sentence_splitter.sentence_cutter import SentenceCutter
 import numpy as np
 
 
 class Router:
     def __init__(self):
-        self.paragraph_cutter = ParagraphCutter()
+        self.paragraph_cutter = NaturalCutter()
         self.sentence_cutter = SentenceCutter()
 
     def stat(self, text):

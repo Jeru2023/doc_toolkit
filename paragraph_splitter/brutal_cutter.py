@@ -1,11 +1,9 @@
 from sentence_splitter.sentence_cutter import SentenceCutter
-from metadata_extractor.tag_extractor import TagExtractor
 
 
-class ParagraphCutter:
+class BrutalCutter:
     def __init__(self):
         self.sentence_cutter = SentenceCutter()
-        self.tag_extractor = TagExtractor()
 
     def cut(self, text, chunk_size=800):
         sentences = self.sentence_cutter.cut(text)
@@ -24,7 +22,7 @@ class ParagraphCutter:
 
 
 if __name__ == '__main__':
-    pc = ParagraphCutter()
+    bc = BrutalCutter()
 
     content = """
     3月11日，美指上周正如预期向下运行，最低102.30附近，周图收阴柱。从图形来看，后市重点关注下方101.70强支撑区域，若能成功跌破，美指将深跌至98.30和97.30附近的概率将加大好多；反则关注向上反弹行情。本周主要为震荡格局行情，在上方103.60以下还是偏空头，看是反弹后继续跌，还是反弹变反转站稳103.60上方，向上测试105.80附近。实战操作上，建议反弹修整后，在103.20-103.40区域做空，止损104.10，目标看向102.80和102.40，再看向102.20和101.70附近。控制仓量，严格止损。
@@ -35,5 +33,5 @@ if __name__ == '__main__':
 
 白银正如预期向上运行，最高24.60附近，周图收阳柱。从图形来看，白银后市23，50以上继续看涨，目标25和25.50附近。实战操作可等待24.60-23.50震荡修整完结后再进场，若不向下回调，不建议高位追多，风险较大。本周只有框架思路，没有具体操作建议。
     """
-    results = pc.cut(content)
+    results = bc.cut(content)
     print(results)
