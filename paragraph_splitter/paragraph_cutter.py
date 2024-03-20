@@ -35,16 +35,17 @@ class ParagraphCutter:
             # raise exception of error mode param
             raise Exception('error split_mode param provided, should be bert, natural or brutal')
 
-        results = []
+        chunks = []
         for paragraph in paragraphs:
+            chunk = {"text": paragraph}
             if with_tags:
                 tag_extractor = TagExtractor()
                 tags = tag_extractor.extract(paragraph, extract_mode=extract_mode, top_k=top_k)
-                paragraph["tags"] = tags
+                chunk["tags"] = tags
             if with_entities:
                 entity_extractor = EntityExtractor()
                 entities = entity_extractor.extract(paragraph)
-                paragraph["entities"] = entities
-            results.append(paragraph)
+                chunk["entities"] = entities
+            chunks.append(chunk)
 
-        return paragraphs
+        return chunks
