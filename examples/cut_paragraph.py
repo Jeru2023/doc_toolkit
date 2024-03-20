@@ -8,9 +8,19 @@ content = """
 
 pc = ParagraphCutter()
 results = pc.cut(content, with_tags=True, with_entities=True)
-
+print(results)
 for result in results:
     print('------------')
     print(result['text'])
     print(result['tags'])
-    print(result['entities'])
+    # print(result['entities'])
+    # 转换格式
+    entities = []
+    for item in result['entities']:
+        for key, values in item.items():
+            count_dict = {}
+            for value in values:
+                text = value['text']
+                count_dict[text] = count_dict.get(text, 0) + 1
+            entities.append({key: count_dict})
+    print(entities)
