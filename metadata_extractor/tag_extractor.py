@@ -10,7 +10,6 @@ class TagExtractor:
     def extract(text, top_k=5, tf_idf=False):
         if tf_idf:
             return jieba.analyse.extract_tags(text, topK=top_k, allowPOS=POS)
-
         else:
             # text rank
             return jieba.analyse.textrank(text, topK=top_k, withWeight=False, allowPOS=POS)
