@@ -3,6 +3,20 @@
 
 ### Sentence Segement
 ### Paragraph Segement
+```sh  
+def cut(text, split_mode='bert', with_tags=False, with_entities=False, chunk_size=800,
+      top_k=5, extract_mode='text_rank'):
+  """
+  :param text: text to be cut
+  :param split_mode: 'bert', 'natural' or 'brutal'
+  :param with_tags: if keyword tags required.
+  :param with_entities: if entity extraction required
+  :param chunk_size: applicable only for 'brutal'
+  :param top_k: number of tags to extract
+  :param extract_mode: 'text_rank' or 'tfidf'
+  :return: a list of dictionaries, each dictionary represents a paragraph
+  """
+```sh  
 #### Segment Methods
 1. Natural Cut<br>
    Content splitted by '\n'
