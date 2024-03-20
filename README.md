@@ -22,6 +22,11 @@ Before segmentation, first calculate:<br>
 <br>
 These statistics can be used to automatically determine the appropriate segmentation method.
 
+### Topic Clustering
+#### K-Means and Principle Component Analysis
+#### DBScan and Multidimensional Scaling
+#### Hierarchical Clustering with WARD
+
 ### Coreference Resolution
 Get "trained_coref_model" from Jeru and place it in "models" folder.
 
