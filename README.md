@@ -2,8 +2,9 @@
 ## About The Project
 
 ### Sentence Segement
+
 ### Paragraph Segement
-```sh  
+```Python  
 def cut(text, split_mode='bert', with_tags=False, with_entities=False, chunk_size=800,
       top_k=5, extract_mode='text_rank'):
   """
@@ -16,7 +17,8 @@ def cut(text, split_mode='bert', with_tags=False, with_entities=False, chunk_siz
   :param extract_mode: 'text_rank' or 'tfidf'
   :return: a list of dictionaries, each dictionary represents a paragraph
   """
-```sh  
+```sh
+
 #### Segment Methods
 1. Natural Cut<br>
    Content splitted by '\n'
