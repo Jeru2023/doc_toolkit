@@ -72,12 +72,12 @@ Get "trained_coref_model" from Jeru and place it in "models" folder.
 ### Paragraph Split
 
 ```python
-from paragraph_splitter.bert_cutter import BertCutter
+from paragraph_splitter.paragraph_cutter import ParagraphCutter
 
-bs = BertCutter()
+pc = ParagraphCutter()
 
 content = "some text input..."
-results = bs.cut(content, with_tags=True, with_entities=True)
+results = pc.cut(content, with_tags=True, with_entities=True)
 
 for result in results:
    print(result["paragraph"])
