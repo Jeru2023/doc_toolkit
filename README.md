@@ -13,7 +13,7 @@ ParagraphCutter.cut() Parameters:<br>
 :param chunk_size: applicable only for 'brutal'
 :param top_k: number of tags to extract
 :param extract_mode: 'text_rank' or 'tfidf'
-```sh
+```
 
 #### Segment Methods
 1. Natural Cut<br>
