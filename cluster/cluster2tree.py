@@ -109,6 +109,7 @@ class Cluster2Tree:
             node_a.size = int(row[3])
             node_a.word_cnt = left_node.word_cnt + right_node.word_cnt
             node_a.leafs = left_node.leafs + right_node.leafs
+            node_a.leafs.sort(key=lambda x: x.index)
 
             node_a_index += 1  # 下一个父节点index+1
             nodes_dict.update({node_a.index: node_a})
@@ -144,4 +145,4 @@ if __name__ == '__main__':
 
     # 按2000字切分链表
     # [print(node.leafs) for node in ct.cut_tree(limit_cut=2000)]
-    [print(node.pp_branch()) for node in ct.cut_tree(limit_cut=2000)]
+    [print(node.pp_branch()) for node in ct.cut_tree(chunk_size=2000)]
