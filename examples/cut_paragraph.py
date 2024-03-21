@@ -8,7 +8,7 @@ content = """
 
 pc = ParagraphCutter()
 results = pc.cut(content, with_tags=True, with_entities=True)
-print(results)
+
 for result in results:
     print('------------')
     print(result['text'])

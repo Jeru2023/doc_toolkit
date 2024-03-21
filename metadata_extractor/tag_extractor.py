@@ -1,13 +1,17 @@
 import jieba.analyse
+from tools import utils
+import os
 
 #POS = ('n', 'nz', 'v', 'vd', 'vn', 'l', 'a', 'd')
 POS = ('n', 'nz', 'ns', 'nt', 'nr', 'l')
 
 
 class TagExtractor:
+    def __init__(self):
+        self.stopwords_path = os.path.join(utils.get_root_path(), 'metadata_extractor/stopwords.txt')
 
-    @staticmethod
-    def extract(text, top_k=5, extract_mode='text_rank'):
+    def extract(self, text, top_k=5, extract_mode='text_rank'):
+        jieba.analyse.set_stop_words(self.stopwords_path)
         if extract_mode == 'tfidf':
             return jieba.analyse.extract_tags(text, topK=top_k, allowPOS=POS)
         elif extract_mode == 'text_rank':

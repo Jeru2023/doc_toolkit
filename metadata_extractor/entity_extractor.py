@@ -10,7 +10,6 @@ class EntityExtractor:
     def __init__(self):
         self.ie = UIEPredictor(model='uie-base', task_path=MODEL_PATH, schema=SCHEMA)
 
-    @timer
     def extract(self, text):
         result = self.ie(text)
         return result
