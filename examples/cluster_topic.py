@@ -7,4 +7,10 @@ doc = """
 
 doc_splitter = DocSplitter()
 nodes = doc_splitter.split(doc, 1000)
-print(nodes)
+
+i = 1
+for node in nodes:
+    print('*** chunk {i} ***'.format(i=i))
+    print(node)
+    print('--------------------------------\n')
+    i += 1
