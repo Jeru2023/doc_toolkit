@@ -3,13 +3,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 import jieba.posseg
 import re
+from tools.utils import timer
 
 
 class TopicCluster:
 
     @staticmethod
-    def tokenizer(docs):
-        text = re.sub('\W*', '', ''.join(docs))
+    def tokenizer(doc):
+        text = re.sub('\W*', '', ''.join(doc))
         words = jieba.posseg.cut(text)
 
         POS = ('n', 'nz', 'ns', 'nt', 'nr', 'l')
@@ -26,13 +27,14 @@ class TopicCluster:
     def get_tfidf_matrix(self, docs):
         tokenizer = self.tokenizer(docs)
         # chosen n-gram of three words. It will produce phrases containing upto three words
-        vectorizer = TfidfVectorizer(min_df=5, stop_words='english', tokenizer=tokenizer, ngram_range=(1, 3))
+        vectorizer = TfidfVectorizer(min_df=5, stop_words='english', tokenizer=self.tokenizer, ngram_range=(1, 3))
 
         # fit the vectorizer to documents
         tfidf_matrix = vectorizer.fit_transform(docs)
 
         return tfidf_matrix
 
+    @timer
     def cluster(self, docs):
         tfidf_matrix = self.get_tfidf_matrix(docs)
 

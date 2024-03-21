@@ -115,19 +115,19 @@ class Cluster2Tree:
 
         return nodes_dict.popitem()[1]
 
-    def cut(self, root, limit_cut=2000) -> list[Cluster2Node]:
+    def cut(self, root, chunk_size=2000) -> list[Cluster2Node]:
         """
         从任一节点递归遍历，做2000字内切分
         """
-        if root.word_cnt <= limit_cut or root.left is None:
+        if root.word_cnt <= chunk_size or root.left is None:
             return [root]
         return self.cut(root.left) + self.cut(root.right)
 
-    def cut_tree(self, limit_cut=2000) -> list[Cluster2Node]:
+    def cut_tree(self, chunk_size=2000) -> list[Cluster2Node]:
         """
         从root节点递归遍历，做2000字内切分
         """
-        return self.cut(self.root, limit_cut=limit_cut)
+        return self.cut(self.root, chunk_size=chunk_size)
 
     def __repr__(self):
         return f"Node(index={self.root.index}, size={self.root.size}, word_cnt={self.root.word_cnt})"
