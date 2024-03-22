@@ -144,4 +144,4 @@ if __name__ == '__main__':
 
     # 按2000字切分链表
     # [print(node.leafs) for node in ct.cut_tree(limit_cut=2000)]
-    [print(node.pp_branch()) for node in ct.cut_tree(limit_cut=2000)]
+    [print(node.pp_branch()) for node in ct.cut_tree(chunk_size=2000)]
