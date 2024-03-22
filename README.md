@@ -1,6 +1,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-<img src="images/layout.png">
+<img src="images/layers.png">
 
 ### Sentence Segement
 
