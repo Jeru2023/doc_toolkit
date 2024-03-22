@@ -1,20 +1,20 @@
 from paragraph_splitter.bert_cutter import BertCutter
 from paragraph_splitter.brutal_cutter import BrutalCutter
 from paragraph_splitter.natural_cutter import NaturalCutter
-from metadata_extractor.tag_extractor import TagExtractor
 from metadata_extractor.entity_extractor import EntityExtractor
 from tools.utils import timer
 
 
 class ParagraphCutter:
-    @staticmethod
+    def __init__(self):
+        self.entity_extractor = EntityExtractor()
+
     @timer
-    def cut(text, split_mode='bert', with_tags=False, with_entities=False, chunk_size=800,
+    def cut(self, text, split_mode='bert', with_entities=False, chunk_size=800,
             top_k=5, extract_mode='text_rank'):
         """
         :param text: text to be cut
         :param split_mode: 'bert', 'natural' or 'brutal'
-        :param with_tags: if keyword tags required.
         :param with_entities: if entity extraction required
         :param chunk_size: applicable only for 'brutal'
         :param top_k: number of tags to extract
@@ -38,22 +38,6 @@ class ParagraphCutter:
         chunks = []
         for paragraph in paragraphs:
             chunk = {"text": paragraph}
-            if with_tags:
-                tag_extractor = TagExtractor()
-                tags = tag_extractor.extract(paragraph, extract_mode=extract_mode, top_k=top_k)
-                chunk["tags"] = tags
-            if with_entities:
-                entity_extractor = EntityExtractor()
-                entities = entity_extractor.extract(paragraph)
-                entities_ = []
-                for item in entities:
-                    for key, values in item.items():
-                        count_dict = {}
-                        for value in values:
-                            text = value['text']
-                            count_dict[text] = count_dict.get(text, 0) + 1
-                        entities_.append({key: count_dict})
-                chunk["entities"] = entities_
             chunks.append(chunk)
 
         return chunks

@@ -1,8 +1,21 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+<img src="images/layers.png">
 
 ### Sentence Segement
+
 ### Paragraph Segement
+ParagraphCutter.cut() Parameters:<br>
+```Python  
+:param text: text to be cut
+:param split_mode: 'bert', 'natural' or 'brutal'
+:param with_tags: if keyword tags required.
+:param with_entities: if entity extraction required
+:param chunk_size: applicable only for 'brutal'
+:param top_k: number of tags to extract
+:param extract_mode: 'text_rank' or 'tfidf'
+```
+
 #### Segment Methods
 1. Natural Cut<br>
    Content splitted by '\n'
@@ -72,12 +85,12 @@ Get "trained_coref_model" from Jeru and place it in "models" folder.
 ### Paragraph Split
 
 ```python
-from paragraph_splitter.bert_cutter import BertCutter
+from paragraph_splitter.paragraph_cutter import ParagraphCutter
 
-bs = BertCutter()
+pc = ParagraphCutter()
 
 content = "some text input..."
-results = bs.cut(content, with_tags=True, with_entities=True)
+results = pc.cut(content, with_tags=True, with_entities=True)
 
 for result in results:
    print(result["paragraph"])
@@ -86,6 +99,14 @@ for result in results:
    print('----------------')
 ```
 ### Entity Extraction
+旧版本使用uie_base模型推理一个200段paragraph的长文耗时185秒，可能问题出现在反复的engine creating上。<br>
+优化后将engine creating移到初始化方法中，耗时151秒。<br>
+
+如需进一步提速，可考虑以下方式:<br>
+1. 使用GPU<br>
+2. GPU开启fp16加速<br>
+3. 尝试更轻量的模型，如medium or tiny.<br>
+4. 查看PaddleNLP官方文档，有更多加速技巧<br>
 
 ### Clustering
 

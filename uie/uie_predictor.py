@@ -556,6 +556,8 @@ class UIEPredictor(object):
                         single_results = short_results[v]
                         offset += len(short_inputs[v])
                     else:
+                        if v > len(short_results) - 1:
+                            continue
                         for i in range(len(short_results[v])):
                             if 'start' not in short_results[v][
                                     i] or 'end' not in short_results[v][i]:

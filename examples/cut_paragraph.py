@@ -1,5 +1,13 @@
 # -*- encoding: utf-8 -*-
 from paragraph_splitter.paragraph_cutter import ParagraphCutter
+from tools.utils import timer
+from metadata_extractor.entity_extractor import EntityExtractor
+
+
+@timer
+def extract(text):
+    results = pc.cut(text, with_tags=False, with_entities=True)
+    return results
 
 
 content = """
@@ -7,11 +15,13 @@ content = """
 """
 
 pc = ParagraphCutter()
-results = pc.cut(content, with_tags=True, with_entities=True)
-print(results)
+results = extract(content)
+
+
 for result in results:
     print('------------')
     print(result['text'])
-    print(result['tags'])
-    print(result['entities'])
-
+    if 'tags' in result:
+        print(result['tags'])
+    if 'entities' in result:
+        print(result['entities'])
