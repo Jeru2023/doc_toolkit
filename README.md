@@ -98,6 +98,14 @@ for result in results:
    print('----------------')
 ```
 ### Entity Extraction
+旧版本使用uie_base模型推理一个200段paragraph的长文耗时185秒，可能问题出现在反复的engine creating上。<br>
+优化后将engine creating移到初始化方法中，耗时151秒。<br>
+
+如需进一步提速，可考虑以下方式:<br>
+1. 使用GPU<br>
+2. GPU开启fp16加速<br>
+3. 尝试更轻量的模型，如medium or tiny.<br>
+4. 查看PaddleNLP官方文档，有更多加速技巧<br>
 
 ### Clustering
 
