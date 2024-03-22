@@ -1,10 +1,10 @@
 from paragraph_splitter.paragraph_cutter import ParagraphCutter
+from sentence_splitter.sentence_cutter import SentenceCutter
 from metadata_extractor.tag_extractor import TagExtractor
 from metadata_extractor.entity_extractor import EntityExtractor
 from cluster.topic_cluster import TopicCluster
 from cluster.cluster2tree import Cluster2Tree
 from collections import defaultdict
-import json
 import warnings
 
 warnings.filterwarnings("ignore")  # Suppress all warnings
@@ -14,6 +14,7 @@ ENTITY_TYPES = ['技术名', '公司名', '产品名', '行业名']
 class DocSplitter:
     def __init__(self):
         self.paragraph_cutter = ParagraphCutter()
+        self.sentence_cutter = SentenceCutter()
         self.topic_cluster = TopicCluster()
         self.tag_extractor = TagExtractor()
         self.entity_extractor = EntityExtractor()

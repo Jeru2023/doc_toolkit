@@ -31,7 +31,7 @@ class SentenceCutter:
         return sentences
 
     @timer
-    def cut(self, text, zh_min_len=30):
+    def cut(self, text, zh_min_len=10):
         lang = detect(text)
 
         if lang.startswith('zh'):
