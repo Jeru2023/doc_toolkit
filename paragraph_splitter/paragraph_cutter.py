@@ -7,9 +7,11 @@ from tools.utils import timer
 
 
 class ParagraphCutter:
-    @staticmethod
+    def __init__(self):
+        self.entity_extractor = EntityExtractor()
+
     @timer
-    def cut(text, split_mode='bert', with_tags=False, with_entities=False, chunk_size=800,
+    def cut(self, text, split_mode='bert', with_tags=False, with_entities=False, chunk_size=800,
             top_k=5, extract_mode='text_rank'):
         """
         :param text: text to be cut
@@ -43,8 +45,7 @@ class ParagraphCutter:
                 tags = tag_extractor.extract(paragraph, extract_mode=extract_mode, top_k=top_k)
                 chunk["tags"] = tags
             if with_entities:
-                entity_extractor = EntityExtractor()
-                entities = entity_extractor.extract(paragraph)
+                entities = self.entity_extractor.extract(paragraph)
                 entities_ = []
                 for item in entities:
                     for key, values in item.items():

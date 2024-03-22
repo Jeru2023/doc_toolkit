@@ -1,6 +1,9 @@
 from paragraph_splitter.paragraph_cutter import ParagraphCutter
 from cluster.topic_cluster import TopicCluster
 from cluster.cluster2tree import Cluster2Tree
+import warnings
+
+warnings.filterwarnings("ignore")  # Suppress all warnings
 
 
 class DocSplitter:
