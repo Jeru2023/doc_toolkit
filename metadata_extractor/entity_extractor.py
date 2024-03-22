@@ -12,9 +12,21 @@ class EntityExtractor:
         # set use_fp16 to True to speed up with GPU
         self.ie = UIEPredictor(model='uie-base', task_path=MODEL_PATH, schema=SCHEMA, use_fp16=False)
 
+    @staticmethod
+    def convert_format(entities):
+        _entities = []
+        for item in entities:
+            for key, values in item.items():
+                count_dict = {}
+                for value in values:
+                    text = value['text']
+                    count_dict[text] = count_dict.get(text, 0) + 1
+                _entities.append({key: count_dict})
+        return _entities
+
     def extract(self, text):
-        result = self.ie(text)
-        return result
+        entities = self.ie(text)
+        return self.convert_format(entities)
 
 
 if __name__ == '__main__':

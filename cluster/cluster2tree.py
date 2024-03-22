@@ -40,14 +40,14 @@ class Cluster2Node:
         """
         return {
             'chunk': {
-                'top_5_entities': self.branch_top_5_entities,
                 'core_entity': self.branch_core_entity,
+                'top_5_entities': self.branch_top_5_entities,
                 'tags': self.branch_tags,
                 'paragraphs': [{
                     'index': paragraph.leaf_index,
-                    'text': paragraph.leaf_text,
-                    'entities': paragraph.leaf_entities,
                     'core_entity': paragraph.leaf_core_entity,
+                    'entities': paragraph.leaf_entities,
+                    'text': paragraph.leaf_text,
                 } for paragraph in self.leafs
                 ]
             }
