@@ -2,7 +2,7 @@ import jieba.analyse
 from tools import utils
 import os
 
-#POS = ('n', 'nz', 'v', 'vd', 'vn', 'l', 'a', 'd')
+# POS = ('n', 'nz', 'v', 'vd', 'vn', 'l', 'a', 'd')
 POS = ('n', 'nz', 'ns', 'nt', 'nr', 'l')
 
 
@@ -24,8 +24,10 @@ class TagExtractor:
 if __name__ == '__main__':
     tag_extractor = TagExtractor()
 
-    text = "美元指数回落至104下方，非美货币涨跌互现，人民币小幅贬值：人民币即期汇率收于7.1984（+57pips），日元-0.22%、韩元+0.33%、欧元+0.42%、加元+0.06%、澳元+0.83%、英榜+0.43%。"
-    tags_tfidf = tag_extractor.extract(text, extract_mode='tfidf')
-    print(tags_tfidf)
-    tags_textrank = tag_extractor.extract(text, extract_mode='text_rank')
-    print(tags_textrank)
+    text = """
+    我在八零年代当后妈#我在八零年代当后妈全集[话题]# #小红书追剧人[话题]# #一起追剧[话题]#我在八零年代当后妈全集;小红书追剧人;一起追剧
+    """
+    tags_tfidf = tag_extractor.extract(text, extract_mode='tfidf', top_k=10)
+    print(' '.join(tags_tfidf))
+    tags_textrank = tag_extractor.extract(text, extract_mode='text_rank', top_k=10)
+    print(' '.join(tags_textrank))
