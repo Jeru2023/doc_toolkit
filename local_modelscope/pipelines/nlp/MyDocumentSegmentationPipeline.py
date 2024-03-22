@@ -63,14 +63,14 @@ class DocumentSegmentationPipeline(Pipeline):
 
     def __call__(
             self, documents: Union[List[List[str]], List[str],
-                                   str]) -> Dict[str, Any]:
+            str]) -> Dict[str, Any]:
         output = self.predict(documents)
         output = self.postprocess(output)
         return output
 
     def predict(
             self, documents: Union[List[List[str]], List[str],
-                                   str]) -> Dict[str, Any]:
+            str]) -> Dict[str, Any]:
         pred_samples = self.cut_documents(documents)
 
         if self.model_cfg['level'] == 'topic':
@@ -107,7 +107,7 @@ class DocumentSegmentationPipeline(Pipeline):
         predictions = np.argmax(predictions, axis=2)
         assert len(sentences) == len(
             predictions), 'sample {}  infer_sample {} prediction {}'.format(
-                num_samples, len(sentences), len(predictions))
+            num_samples, len(sentences), len(predictions))
         # Remove ignored index (special tokens)
 
         true_predictions = [
@@ -264,7 +264,7 @@ class DocumentSegmentationPipeline(Pipeline):
             }
 
     @staticmethod
-    def cut_sentence(self, para):
+    def cut_sentence(para):
         sc = SentenceCutter()
         return sc.cut(para)
         # para = re.sub(r'([。！!？\?])([^”’])', r'\1\n\2', para)  # noqa *
