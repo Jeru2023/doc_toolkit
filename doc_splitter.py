@@ -26,7 +26,11 @@ class DocSplitter:
             for sentence in paragraph['sentences']:
                 entities = self.entity_extractor.extract(sentence['text'])
                 sentence['entities'] = entities
-                sentence['subject_entity'] = self.grammar_analyzer.find_subject_entity(sentence['text'], entities)
+
+                entity_subject, coref_subject = self.grammar_analyzer.find_subject(sentence['text'], entities)
+                sentence['entity_subject'] = entity_subject
+                sentence['coref_subject'] = coref_subject
+
         return paragraphs
 
     def split(self, doc, chunk_size=2000):

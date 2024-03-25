@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 from ltp import LTP
 
+COREF_DICT = ['公司', '本公司']
+
 
 class GrammarAnalyzer:
     def __init__(self):
@@ -24,16 +26,19 @@ class GrammarAnalyzer:
         dep = output.dep[0]['label']
         return cws, dep
 
-    def find_subject_entity(self, text, entities):
+    def find_subject(self, text, entities):
         company_names = self.get_company_names(entities)
         cws, dep = self.parse_query(text, company_names)
 
-        sbv_word = None
+        sbv_entity_word, sbv_coref_word = None, None
         for i, dep_tag in enumerate(dep):
-            if (dep_tag == 'SBV') and (cws[i] in company_names):
-                sbv_word = cws[i]
+            if dep_tag == 'SBV':
+                if cws[i] in company_names:
+                    sbv_entity_word = cws[i]
+                elif cws[i] in COREF_DICT:
+                    sbv_coref_word = cws[i]
                 break
-        return sbv_word
+        return sbv_entity_word, sbv_coref_word
 
 
 if __name__ == '__main__':
@@ -49,7 +54,8 @@ if __name__ == '__main__':
     _entities = [{'公司名': {'东方通': 1, '宝兰德': 1}}]
 
     for _text in texts:
-        _subject_entity = grammar_analyzer.find_subject_entity(_text, _entities)
-        print('Subject is: ', _subject_entity)
+        _entity_subject, _coref_subject = grammar_analyzer.find_subject(_text, _entities)
+        print('Entity subject is: ', _entity_subject)
+        print('Coref subject is: ', _coref_subject)
 
 
