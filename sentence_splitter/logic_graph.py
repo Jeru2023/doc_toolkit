@@ -4,6 +4,7 @@
 # LAST MODIFIED ON: 2020/10/27 7:04 PM
 # AIM:
 import attrdict
+import re
 
 from .automata import condition, operation
 from .automata import symbols
@@ -15,6 +16,13 @@ def init_nodes(**kwargs):
     max_len = kwargs.get('max_len', 128)
     hard_max = kwargs.get('hard_max', 300)
     min_len = kwargs.get('min_len', 15)
+    end_symbols_additional = kwargs.get('end_symbols_additional', [''])
+    if end_symbols_additional != ['']:
+        SYMBOLS.update({
+            'comma': re.compile(SYMBOLS['comma'].pattern.replace('。', f'。{"".join(end_symbols_additional)}')),
+            'end_symbols': re.compile(SYMBOLS['end_symbols'].pattern.replace('。', f'。{"".join(end_symbols_additional)}')),
+            'all_symbols': re.compile(SYMBOLS['all_symbols'].pattern.replace('。', f'。{"".join(end_symbols_additional)}')),
+        })
 
     # --- initialize condition & operation --- #
     edges = attrdict.AttrDict({
