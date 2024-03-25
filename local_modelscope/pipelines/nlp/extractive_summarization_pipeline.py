@@ -50,6 +50,7 @@ class ExtractiveSummarizationPipeline(Pipeline):
 
         self.model_dir = self.model.model_dir
         self.model_cfg = self.model.model_cfg
+        self.sc = SentenceCutter()
 
         if preprocessor is None:
             self.preprocessor = DocumentSegmentationTransformersPreprocessor(
@@ -173,10 +174,10 @@ class ExtractiveSummarizationPipeline(Pipeline):
             'labels': labels
         }
 
-    @staticmethod
-    def cut_sentence(para):
-        sc = SentenceCutter()
-        return sc.cut(para)
+    # @staticmethod
+    def cut_sentence(self, para):
+        # sc = SentenceCutter()
+        return self.sc.cut(para)
         # para = re.sub(r'([。！.!？\?])([^”’])', r'\1\n\2', para)  # noqa *
         # para = re.sub(r'(\.{6})([^”’])', r'\1\n\2', para)  # noqa *
         # para = re.sub(r'(\…{2})([^”’])', r'\1\n\2', para)  # noqa *

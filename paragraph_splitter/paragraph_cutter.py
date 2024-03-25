@@ -20,7 +20,7 @@ class ParagraphCutter:
                 'coref_subject': '',
                 'entities': [],
                 'text': sentence
-            } for sentence in self.sentence_cutter.cut(text, zh_min_len=10)
+            } for sentence in self.sentence_cutter.cut(text, zh_min_len=10, end_symbols_additional=['；'])
         ]
 
     @staticmethod
