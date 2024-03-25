@@ -30,7 +30,6 @@ class SentenceCutter:
         sentences = sequence.sentence_list()
         return sentences
 
-    @timer
     def cut(self, text, zh_min_len=10):
         lang = detect(text)
 

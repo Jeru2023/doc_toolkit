@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from modelscope.utils.import_utils import LazyImportModule
 LazyImportModule.AST_INDEX['index'][('PIPELINES', 'document-segmentation', 'document-segmentation')] = {
-    'module': 'local_modelscope.pipelines.nlp.MyDocumentSegmentationPipeline'}
+    'module': 'local_modelscope.pipelines.nlp.document_segmentation_pipeline'}
 from modelscope.pipelines import pipeline
 from modelscope.utils.constant import Tasks
 from tools.utils import timer

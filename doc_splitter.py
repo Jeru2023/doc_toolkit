@@ -4,6 +4,7 @@ from metadata_extractor.tag_extractor import TagExtractor
 from metadata_extractor.entity_extractor import EntityExtractor
 from cluster.topic_cluster import TopicCluster
 from cluster.cluster2tree import Cluster2Tree
+from grammar.analyzer import GrammarAnalyzer
 from collections import defaultdict
 import warnings
 
@@ -18,16 +19,19 @@ class DocSplitter:
         self.topic_cluster = TopicCluster()
         self.tag_extractor = TagExtractor()
         self.entity_extractor = EntityExtractor()
+        self.grammar_analyzer = GrammarAnalyzer()
 
-    def append_sentence_entities(self, paragraphs):
+    def append_metadata_to_sentence(self, paragraphs):
         for paragraph in paragraphs:
             for sentence in paragraph['sentences']:
-                sentence['entities'] = self.entity_extractor.extract(sentence['text'])
+                entities = self.entity_extractor.extract(sentence['text'])
+                sentence['entities'] = entities
+                sentence['subject_entity'] = self.grammar_analyzer.find_subject_entity(sentence['text'], entities)
         return paragraphs
 
     def split(self, doc, chunk_size=2000):
         paragraphs = self.paragraph_cutter.cut(doc)
-        self.append_sentence_entities(paragraphs)
+        self.append_metadata_to_sentence(paragraphs)
 
         print(paragraphs)
 

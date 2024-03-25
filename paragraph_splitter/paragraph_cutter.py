@@ -12,11 +12,11 @@ class ParagraphCutter:
     def fill_sentences(self, text):
         """
         对paragraph进行切分
-        'sentences':{'subject':'xxx', entities:[], 'text':'xxx'}
+        'sentences':{'subject_entity':'xxx', entities:[], 'text':'xxx'}
         """
         return [
             {
-                'subject': '',
+                'subject_entity': '',
                 'entities': [],
                 'text': sentence
             } for sentence in self.sentence_cutter.cut(text, zh_min_len=10)
