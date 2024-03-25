@@ -6,6 +6,7 @@ from cluster.topic_cluster import TopicCluster
 from cluster.cluster2tree import Cluster2Tree
 from grammar.analyzer import GrammarAnalyzer
 from collections import defaultdict
+from tools.utils import timer
 import warnings
 
 warnings.filterwarnings("ignore")  # Suppress all warnings
@@ -21,6 +22,7 @@ class DocSplitter:
         self.entity_extractor = EntityExtractor()
         self.grammar_analyzer = GrammarAnalyzer()
 
+    @timer
     def append_metadata_to_sentence(self, paragraphs):
         for paragraph in paragraphs:
             for sentence in paragraph['sentences']:
@@ -33,13 +35,33 @@ class DocSplitter:
 
         return paragraphs
 
+    @staticmethod
+    @timer
+    def merge_paragraph_text(paragraph_list):
+        """合并每个段落的句子文本。
+
+        Args:
+          paragraph_list: 一个字典列表，其中每个字典代表一段，包含 `sentences` 键，
+            其值为一个句子列表。
+
+        Returns:
+          一个包含合并后段落文本的列表。
+        """
+        merged_texts = []
+        for paragraph in paragraph_list:
+            sentences = paragraph['sentences']
+            merged_text = ' '.join([sentence['text'] for sentence in sentences])
+            merged_texts.append(merged_text)
+
+        return merged_texts
+
     def split(self, doc, chunk_size=2000):
+        # paragraphs as a list of dict
         paragraphs = self.paragraph_cutter.cut(doc)
+
         self.append_metadata_to_sentence(paragraphs)
 
-        print(paragraphs)
-
-        docs = [paragraph['text'] for paragraph in paragraphs]
+        docs = self.merge_paragraph_text(paragraphs)
 
         linkage_matrix = self.topic_cluster.cluster(docs)
 

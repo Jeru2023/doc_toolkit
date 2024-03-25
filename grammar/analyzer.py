@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 from ltp import LTP
+from tools.utils import timer
 
 COREF_DICT = ['公司', '本公司']
 
@@ -26,6 +27,7 @@ class GrammarAnalyzer:
         dep = output.dep[0]['label']
         return cws, dep
 
+    # @timer
     def find_subject(self, text, entities):
         company_names = self.get_company_names(entities)
         cws, dep = self.parse_query(text, company_names)

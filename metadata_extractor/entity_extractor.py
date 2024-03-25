@@ -24,6 +24,7 @@ class EntityExtractor:
                 _entities.append({key: count_dict})
         return _entities
 
+    # @timer
     def extract(self, text):
         entities = self.ie(text)
         return self.convert_format(entities)
