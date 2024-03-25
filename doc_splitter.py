@@ -19,8 +19,15 @@ class DocSplitter:
         self.tag_extractor = TagExtractor()
         self.entity_extractor = EntityExtractor()
 
+    def append_sentence_entities(self, paragraphs):
+        for paragraph in paragraphs:
+            for sentence in paragraph['sentences']:
+                sentence['entities'] = self.entity_extractor.extract(sentence['text'])
+        return paragraphs
+
     def split(self, doc, chunk_size=2000):
         paragraphs = self.paragraph_cutter.cut(doc)
+        self.append_sentence_entities(paragraphs)
 
         print(paragraphs)
 

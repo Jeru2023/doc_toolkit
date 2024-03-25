@@ -52,8 +52,8 @@ class ParagraphCutter:
 
         chunks = []
         for index, paragraph in enumerate(paragraphs):
-            chunk = {"paragraph": self.fill_paragraph(index)}
-            chunk["paragraph"].update({"sentences": self.fill_sentences(paragraph)})
+            chunk = self.fill_paragraph(index)
+            chunk.update({"sentences": self.fill_sentences(paragraph)})
 
             chunks.append(chunk)
 
