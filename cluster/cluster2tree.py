@@ -64,7 +64,7 @@ class Cluster2Node(SentenceCutter):
                     'core_entity': paragraph.leaf_core_entity,
                     'entities': paragraph.leaf_entities,
                     'text': paragraph.leaf_text,
-                    'sentence': self.pp_para(paragraph.leaf_text)
+                    #'sentence': self.pp_para(paragraph.leaf_text)
                 } for paragraph in self.leafs
                 ]
             }

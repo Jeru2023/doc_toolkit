@@ -1,24 +1,39 @@
 from paragraph_splitter.bert_cutter import BertCutter
 from paragraph_splitter.brutal_cutter import BrutalCutter
 from paragraph_splitter.natural_cutter import NaturalCutter
-from metadata_extractor.entity_extractor import EntityExtractor
+from sentence_splitter.sentence_cutter import SentenceCutter
 from tools.utils import timer
 
 
 class ParagraphCutter:
     def __init__(self):
-        self.entity_extractor = EntityExtractor()
+        self.sentence_cutter = SentenceCutter()
+
+    def fill_sentences(self, text):
+        """
+        对paragraph进行切分
+        'sentences':{'subject':'xxx', entities:[], 'text':'xxx'}
+        """
+        return [
+            {
+                'subject': '',
+                'entities': [],
+                'text': sentence
+            } for sentence in self.sentence_cutter.cut(text, zh_min_len=10)
+        ]
+
+    @staticmethod
+    def fill_paragraph(index):
+        return {
+            'index': index,
+        }
 
     @timer
-    def cut(self, text, split_mode='bert', with_entities=False, chunk_size=800,
-            top_k=5, extract_mode='text_rank'):
+    def cut(self, text, split_mode='bert', chunk_size=800):
         """
         :param text: text to be cut
         :param split_mode: 'bert', 'natural' or 'brutal'
-        :param with_entities: if entity extraction required
         :param chunk_size: applicable only for 'brutal'
-        :param top_k: number of tags to extract
-        :param extract_mode: 'text_rank' or 'tfidf'
         :return: a list of dictionaries, each dictionary represents a paragraph
         """
 
@@ -36,8 +51,10 @@ class ParagraphCutter:
             raise Exception('error split_mode param provided, should be bert, natural or brutal')
 
         chunks = []
-        for paragraph in paragraphs:
-            chunk = {"text": paragraph}
+        for index, paragraph in enumerate(paragraphs):
+            chunk = {"paragraph": self.fill_paragraph(index)}
+            chunk["paragraph"].update({"sentences": self.fill_sentences(paragraph)})
+
             chunks.append(chunk)
 
         return chunks

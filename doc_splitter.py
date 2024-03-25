@@ -21,6 +21,9 @@ class DocSplitter:
 
     def split(self, doc, chunk_size=2000):
         paragraphs = self.paragraph_cutter.cut(doc)
+
+        print(paragraphs)
+
         docs = [paragraph['text'] for paragraph in paragraphs]
 
         linkage_matrix = self.topic_cluster.cluster(docs)
