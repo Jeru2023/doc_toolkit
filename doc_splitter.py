@@ -56,11 +56,12 @@ class DocSplitter:
 
         return merged_texts
 
-    def split(self, doc, chunk_size=2000):
+    def split(self, doc, chunk_size=2000, with_entities=True):
         # paragraphs as a list of dict
         paragraphs = self.paragraph_cutter.cut(doc, chunk_size=chunk_size)
 
-        self.append_metadata_to_sentence(paragraphs)
+        if with_entities:
+            self.append_metadata_to_sentence(paragraphs)
 
         # 构建链表
         chunks = self.chunk_cluster_tree.build_cluster_tree(paragraphs)

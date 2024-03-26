@@ -12,7 +12,10 @@ chunks = doc_splitter.split(doc, 2000)
 i = 0
 for chunk in chunks:
     print('*** chunk {i} ***'.format(i=i))
-    print(chunk)
-    print('--------------------------------\n')
+    print('================================\n')
+    for paragraph in chunk['paragraphs']:
+        print(f'*** paragraph index: {paragraph["index"]} ***')
+        print('================================')
+        print(f'{paragraph}\n')
     i += 1
 
