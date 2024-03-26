@@ -83,10 +83,10 @@ class Cluster2Tree:
         # 聚类树root生成
         root = nodes_dict.popitem()[1]
 
-        return {'chunks': [{
+        return [{
             'indexs': [node['index'] for node in chunk],
             'paragraphs': chunk}
-            for chunk in self.cut(root, chunk_size=chunk_size)]}
+            for chunk in self.cut(root, chunk_size=chunk_size)]
 
     def cut(self, branch, chunk_size=2000):
         """
