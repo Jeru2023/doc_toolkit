@@ -56,7 +56,7 @@ class ExtractiveSummarizationPipeline(Pipeline):
                 self.model_dir, self.model.config.max_position_embeddings,
                 **kwargs)
 
-        self.model = 'corse'
+        self.mode = 'coarse'
         self.sc = SentenceCutter()
 
     def __call__(self, documents: Union[List[str], str]) -> Dict[str, Any]:
@@ -177,9 +177,9 @@ class ExtractiveSummarizationPipeline(Pipeline):
         }
 
     # @staticmethod
-    def cut_sentence(para):
+    def cut_sentence(self, para):
         # sc = SentenceCutter()
-        return sc.cut(para)
+        return self.sc.cut(para, mode=self.mode)
         # para = re.sub(r'([。！.!？\?])([^”’])', r'\1\n\2', para)  # noqa *
         # para = re.sub(r'(\.{6})([^”’])', r'\1\n\2', para)  # noqa *
         # para = re.sub(r'(\…{2})([^”’])', r'\1\n\2', para)  # noqa *

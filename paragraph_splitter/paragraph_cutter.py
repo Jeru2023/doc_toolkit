@@ -20,7 +20,7 @@ class ParagraphCutter:
                 'coref_subject': '',
                 'entities': [],
                 'text': sentence
-            } for sentence in self.sentence_cutter.cut(text, model='fine')
+            } for sentence in self.sentence_cutter.cut(text, mode='fine')
         ]
 
     @staticmethod

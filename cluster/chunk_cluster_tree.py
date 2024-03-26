@@ -1,12 +1,11 @@
 from sentence_splitter.sentence_cutter import SentenceCutter
-from topic_cluster import TopicCluster
+from cluster.topic_cluster import TopicCluster
 
 
 class Cluster2Node(SentenceCutter):
     """
     定义节点类
     """
-
     def __init__(self, index, left=None, right=None):
         self.index: int = index  # 节点索引
         self.left = left  # 左子节点

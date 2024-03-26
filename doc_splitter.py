@@ -3,7 +3,7 @@ from sentence_splitter.sentence_cutter import SentenceCutter
 from metadata_extractor.tag_extractor import TagExtractor
 from metadata_extractor.entity_extractor import EntityExtractor
 from cluster.topic_cluster import TopicCluster
-from cluster.cluster2tree import Cluster2Tree
+from cluster.chunk_cluster_tree import Cluster2Tree
 from grammar.analyzer import GrammarAnalyzer
 from collections import defaultdict
 from tools.utils import timer
@@ -21,6 +21,7 @@ class DocSplitter:
         self.tag_extractor = TagExtractor()
         self.entity_extractor = EntityExtractor()
         self.grammar_analyzer = GrammarAnalyzer()
+        self.chunk_cluster_tree = Cluster2Tree()
 
     @timer
     def append_metadata_to_sentence(self, paragraphs):
@@ -57,20 +58,14 @@ class DocSplitter:
 
     def split(self, doc, chunk_size=2000):
         # paragraphs as a list of dict
-        paragraphs = self.paragraph_cutter.cut(doc)
+        paragraphs = self.paragraph_cutter.cut(doc, chunk_size=chunk_size)
 
         self.append_metadata_to_sentence(paragraphs)
 
-        docs = self.merge_paragraph_text(paragraphs)
-
-        linkage_matrix = self.topic_cluster.cluster(docs)
-
         # 构建链表
-        cluster_tree = Cluster2Tree(linkage_matrix, docs)
+        chunks = self.chunk_cluster_tree.build_cluster_tree(paragraphs)
 
-        # 按 chunk_size 长度切分链表
-        nodes = [(node.pp_branch()) for node in cluster_tree.cut_tree(chunk_size=chunk_size)]
-        return nodes
+        return chunks
 
     @staticmethod
     def merge_dict(dict1, dict2):

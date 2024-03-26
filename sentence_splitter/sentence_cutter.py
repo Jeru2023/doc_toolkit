@@ -30,22 +30,22 @@ class SentenceCutter:
         sentences = sequence.sentence_list()
         return sentences
 
-    def cut(self, text, model):
+    def cut(self, text, mode):
         """
         :param text: str
-        :param model: str, 'corse' or 'fine'
+        :param mode: str, 'coarse' or 'fine'
         """
         lang = detect(text)
 
         if lang.startswith('zh'):
-            if model == 'corse':
+            if mode == 'coarse':
                 min_len = 30
                 end_symbols_additional = ['']
-            elif model == 'fine':
+            elif mode == 'fine':
                 min_len = 10
                 end_symbols_additional = ['；']
             else:
-                raise ValueError('model must be corse or fine')
+                raise ValueError('model must be coarse or fine')
 
             # 中文切句调用 cut_to_sentences
             sentences = self.cut_chinese_sentences(text, min_len, end_symbols_additional)
@@ -72,7 +72,7 @@ if __name__ == '__main__':
 
     ]
 
-    sentences = sc.cut(paragraph[1], model='fine')
+    sentences = sc.cut(paragraph[1], mode='fine')
     print('number of sentences:', len(sentences))
     for sentence in sentences:
         print('----------------')
