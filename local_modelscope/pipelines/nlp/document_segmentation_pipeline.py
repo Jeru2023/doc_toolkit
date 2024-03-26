@@ -61,6 +61,9 @@ class DocumentSegmentationPipeline(Pipeline):
                 self.model_dir, self.model.config.max_position_embeddings,
                 **kwargs)
 
+        self.model = 'corse'
+        self.sc = SentenceCutter()
+
     def __call__(
             self, documents: Union[List[List[str]], List[str],
             str]) -> Dict[str, Any]:
@@ -263,10 +266,10 @@ class DocumentSegmentationPipeline(Pipeline):
                 'labels': labels
             }
 
-    @staticmethod
-    def cut_sentence(para):
-        sc = SentenceCutter()
-        return sc.cut(para)
+    # @staticmethod
+    def cut_sentence(self, para):
+        # sc = SentenceCutter()
+        return self.sc.cut(para, model=self.model)
         # para = re.sub(r'([。！!？\?])([^”’])', r'\1\n\2', para)  # noqa *
         # para = re.sub(r'(\.{6})([^”’])', r'\1\n\2', para)  # noqa *
         # para = re.sub(r'(\…{2})([^”’])', r'\1\n\2', para)  # noqa *
