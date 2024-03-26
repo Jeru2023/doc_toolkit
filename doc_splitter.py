@@ -34,7 +34,11 @@ class DocSplitter:
                 sentence['entity_subject'] = entity_subject
                 sentence['coref_subject'] = coref_subject
 
-        return paragraphs
+    def append_tags_to_chunk(self, chunks):
+        for chunk in chunks:
+            chunk_text = self.merge_paragraph_text(chunk['paragraphs'])
+            tags = self.tag_extractor.extract(''.join(chunk_text), extract_mode='text_rank', top_k=10)
+            chunk['tags'] = tags
 
     @staticmethod
     @timer
@@ -56,32 +60,7 @@ class DocSplitter:
 
         return merged_texts
 
-    def split(self, doc, chunk_size=2000, with_entities=True):
-        # paragraphs as a list of dict
-        paragraphs = self.paragraph_cutter.cut(doc, chunk_size=chunk_size)
-
-        if with_entities:
-            self.append_metadata_to_sentence(paragraphs)
-
-        # 构建链表
-        chunks = self.chunk_cluster_tree.build_cluster_tree(paragraphs)
-
-        return chunks
-
-    @staticmethod
-    def merge_dict(dict1, dict2):
-        merged_dict = {}
-        for key, value in dict1.items():
-            if key in dict2:
-                merged_dict[key] = value + dict2[key]
-            else:
-                merged_dict[key] = value
-        for key, value in dict2.items():
-            if key not in merged_dict:
-                merged_dict[key] = value
-        return merged_dict
-
-    # 合并字典
+        # 合并字典
     @staticmethod
     def merge_dicts(dicts):
         merged = defaultdict(dict)
@@ -93,6 +72,42 @@ class DocSplitter:
                 else:
                     merged[key] = value
         return merged
+
+    def merge_sentence_entity_to_paragraph(self, paragraphs):
+        for paragraph in paragraphs:
+            paragraph_entities = []
+            for sentence in paragraph['sentences']:
+                paragraph_entities.extend(sentence['entities'])
+
+            entities = self.merge_dicts(paragraph_entities)
+            paragraph['entities'] = entities
+
+    def merge_paragraph_entity_to_chunk(self, chunks):
+        for chunk in chunks:
+            chunk_entities = []
+            for paragraph in chunk['paragraphs']:
+                chunk_entities.extend(paragraph['entities'])
+
+            entities = self.merge_dicts(chunk_entities)
+            chunk['entities'] = entities
+
+    def split(self, doc, chunk_size=2000, with_entities=True):
+        # paragraphs as a list of dict
+        paragraphs = self.paragraph_cutter.cut(doc, chunk_size=chunk_size)
+
+        if with_entities:
+            self.append_metadata_to_sentence(paragraphs)
+            self.merge_sentence_entity_to_paragraph(paragraphs)
+
+        # 构建链表
+        chunks = self.chunk_cluster_tree.build_cluster_tree(paragraphs)
+
+        # if with_entities:
+        #     self.merge_paragraph_entity_to_chunk(chunks)
+
+        self.append_tags_to_chunk(chunks)
+
+        return chunks
 
     # 获取前 n 个高频词及其频次
     @staticmethod
@@ -148,15 +163,3 @@ class DocSplitter:
             chunk['core_entity'] = self.get_top_company(merge_dicts)
 
         return nodes
-
-    def append_tags_to_cluster(self, nodes, extract_mode='tfidf', top_k=10):
-        for node in nodes:
-            chunk = node['chunk']
-            paragraphs = chunk['paragraphs']
-
-            node_text = ''.join([paragraph['text'] for paragraph in paragraphs])
-            chunk['tags'] = self.tag_extractor.extract(node_text, extract_mode=extract_mode, top_k=top_k)
-
-        return nodes
-
-

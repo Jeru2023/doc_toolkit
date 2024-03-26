@@ -13,8 +13,10 @@ i = 0
 for chunk in chunks:
     print('*** chunk {i} ***'.format(i=i))
     print('================================\n')
+    print(f'chunk tags: {chunk["tags"]}')
     for paragraph in chunk['paragraphs']:
         print(f'*** paragraph index: {paragraph["index"]} ***')
+        print(f'paragraph entities: {paragraph["entities"]}')
         print('================================')
         print(f'{paragraph}\n')
     i += 1
