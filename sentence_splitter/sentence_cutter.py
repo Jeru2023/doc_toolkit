@@ -30,12 +30,25 @@ class SentenceCutter:
         sentences = sequence.sentence_list()
         return sentences
 
-    def cut(self, text, zh_min_len=10, end_symbols_additional=['']):
+    def cut(self, text, model):
+        """
+        :param text: str
+        :param model: str, 'corse' or 'fine'
+        """
         lang = detect(text)
 
         if lang.startswith('zh'):
+            if model == 'corse':
+                min_len = 30
+                end_symbols_additional = ['']
+            elif model == 'fine':
+                min_len = 10
+                end_symbols_additional = ['；']
+            else:
+                raise ValueError('model must be corse or fine')
+
             # 中文切句调用 cut_to_sentences
-            sentences = self.cut_chinese_sentences(text, zh_min_len, end_symbols_additional)
+            sentences = self.cut_chinese_sentences(text, min_len, end_symbols_additional)
         elif lang == 'en':
             # 英文切句调用 Spacy
             doc = self.nlp_en(text)
@@ -54,12 +67,12 @@ if __name__ == '__main__':
         # "张晓风笑着说道，“我们这些年可比过去强多了！“过去吃不起饭，穿不暖衣服。 现在呢？要啥有啥！",
         # "\"What would a stranger do here, Mrs. Price?\" he inquired angrily, remembering, with a pang, that certain new, unaccountable, engrossing emotions had quite banished Fiddy from his thoughts and notice, when he might have detected the signs of approaching illness, met them and vanquished them before their climax.",
         # "Notice that U.S.A. can also be written USA, but U.S. is better with the periods. Also, we can use U.S. as a modifier (the U.S. policy on immigration) but not as a noun (He left the U.S. U.S.A.).",
-        "万壑树参天，千山响杜鹃。山中一夜雨；树杪百重泉。汉女输橦布，巴人讼芋田。文翁翻教授，不敢倚先贤。",
-        "美元指数回落至104下方，非美货币涨跌互现，人民币小幅贬值：人民币即期汇率收于7.1984（+57pips），日元-0.22%、韩元+0.33%、欧元+0.42%、加元+0.06%、澳元+0.83%、英榜+0.43%。",
+        "万壑树参天，千山响杜鹃。山中一夜雨，树杪百重泉。汉女输橦布，巴人讼芋田。文翁翻教授，不敢倚先贤。",
+        "美元指数回落至104下方；非美货币涨跌互现，人民币小幅贬值：人民币即期汇率收于7.1984（+57pips），日元-0.22%、韩元+0.33%、欧元+0.42%、加元+0.06%、澳元+0.83%、英榜+0.43%。",
 
     ]
 
-    sentences = sc.cut(paragraph[0], zh_min_len=1, end_symbols_additional=['；'])
+    sentences = sc.cut(paragraph[1], model='fine')
     print('number of sentences:', len(sentences))
     for sentence in sentences:
         print('----------------')
