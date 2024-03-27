@@ -77,22 +77,23 @@ class DocSplitter:
         for paragraph in paragraphs:
             paragraph_entities = []
             for sentence in paragraph['sentences']:
-                paragraph_entities.extend(sentence['entities'])
+                # exclude time and location entities
+                sentence_entities = [e for e in sentence['entities'] if '时间' not in e and '地点' not in e]
+                paragraph_entities.extend(sentence_entities)
 
             entities = self.merge_dicts(paragraph_entities)
-            paragraph['entities'] = entities
+            paragraph['entities'] = [dict(entities)]
 
     def merge_paragraph_entity_to_chunk(self, chunks):
         for chunk in chunks:
             chunk_entities = []
             for paragraph in chunk['paragraphs']:
-                # 获取所有键的值
-                entity_list = list(paragraph['entities'].values())
+                entity_list = paragraph['entities']
                 chunk_entities.extend(entity_list)
 
             entities = self.merge_dicts(chunk_entities)
 
-            chunk['entities'] = entities
+            chunk['entities'] = [dict(entities)]
 
     def split(self, doc, chunk_size=1000, with_entities=True, with_tags=True):
         # paragraphs as a list of dict
