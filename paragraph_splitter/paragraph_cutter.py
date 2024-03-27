@@ -30,11 +30,11 @@ class ParagraphCutter:
         }
 
     @timer
-    def cut(self, text, split_mode='bert', chunk_size=800):
+    def cut(self, text, split_mode='bert', para_size=800):
         """
         :param text: text to be cut
         :param split_mode: 'bert', 'natural' or 'brutal'
-        :param chunk_size: applicable only for 'brutal'
+        :param para_size: applicable only for 'brutal'
         :return: a list of dictionaries, each dictionary represents a paragraph
         """
 
@@ -46,7 +46,7 @@ class ParagraphCutter:
             paragraphs = natural_cutter.cut(text)
         elif split_mode == 'brutal':
             brutal_cutter = BrutalCutter()
-            paragraphs = brutal_cutter.cut(text, chunk_size)
+            paragraphs = brutal_cutter.cut(text, para_size)
         else:
             # raise exception of error mode param
             raise Exception('error split_mode param provided, should be bert, natural or brutal')

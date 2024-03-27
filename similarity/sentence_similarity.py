@@ -33,8 +33,18 @@ if __name__ == '__main__':
     与同样使用空间-时间注意力机制的 Latte模型相比，STDiT 可以更好的利用已经预训练好的图像 DiT 的权重，从而在视频数据上继续训练。
     """
 
+    content_a3 = """
+        模型采用了Sora同源架构Diffusion Transformer (DiT).
+        它以采用DiT架构的高质量开源文生图模型PixArt-α为基座，在此基础上引入时间注意力层，将其扩展到视频数据上。
+        具体来看，整个架构包括一个预训练好的VAE，文本编码器和一个利用空间-时间注意力机制的STDiT (Spatial Temporal Diffusion Transformer)模型。
+        其中，STDiT 每层的结构如图所示。
+        它用串行的方式在二维的空间注意力模块叠加一维的时间注意力模块，用于建模时序关系。然后在时间注意力模块之后，交叉注意力模块用于对齐文本的语意。
+        与全注意力机制相比，这样的结构大大降低训练和推理开销。
+        与同样使用空间-时间注意力机制的 Latte模型相比，STDiT 更好的利用已经预训练好的图像 DiT 的权重，从而在视频数据上继续训练。
+        """
+
     ss = SentenceSimilarity()
-    print(ss.compare(content_a1, content_a2))
+    print(ss.compare(content_a1, content_a2, content_a3))
 
     tag_extractor = TagExtractor()
     print(tag_extractor.extract(content_a1))

@@ -86,26 +86,30 @@ class DocSplitter:
         for chunk in chunks:
             chunk_entities = []
             for paragraph in chunk['paragraphs']:
-                chunk_entities.extend(paragraph['entities'])
+                # 获取所有键的值
+                entity_list = list(paragraph['entities'].values())
+                chunk_entities.extend(entity_list)
 
             entities = self.merge_dicts(chunk_entities)
+
             chunk['entities'] = entities
 
-    def split(self, doc, chunk_size=2000, with_entities=True):
+    def split(self, doc, chunk_size=1000, with_entities=True, with_tags=True):
         # paragraphs as a list of dict
-        paragraphs = self.paragraph_cutter.cut(doc, chunk_size=chunk_size)
+        paragraphs = self.paragraph_cutter.cut(doc.replace('\n', ''))
 
         if with_entities:
             self.append_metadata_to_sentence(paragraphs)
             self.merge_sentence_entity_to_paragraph(paragraphs)
 
         # 构建链表
-        chunks = self.chunk_cluster_tree.build_cluster_tree(paragraphs)
+        chunks = self.chunk_cluster_tree.build_cluster_tree(paragraphs, chunk_size)
 
-        # if with_entities:
-        #     self.merge_paragraph_entity_to_chunk(chunks)
+        if with_entities:
+            self.merge_paragraph_entity_to_chunk(chunks)
 
-        self.append_tags_to_chunk(chunks)
+        if with_tags:
+            self.append_tags_to_chunk(chunks)
 
         return chunks
 

@@ -28,6 +28,7 @@ class GrammarAnalyzer:
         return cws, dep
 
     # @timer
+
     def find_subject(self, text, entities):
         company_names = self.get_company_names(entities)
         cws, dep = self.parse_query(text, company_names)

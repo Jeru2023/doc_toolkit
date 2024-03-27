@@ -27,7 +27,7 @@ class TopicCluster:
     def get_tfidf_matrix(self, docs):
         tokenizer = self.tokenizer(docs)
         # chosen n-gram of three words. It will produce phrases containing upto three words
-        vectorizer = TfidfVectorizer(min_df=5, stop_words='english', tokenizer=self.tokenizer, ngram_range=(1, 3))
+        vectorizer = TfidfVectorizer(stop_words='english', tokenizer=self.tokenizer, ngram_range=(1, 3))
 
         # fit the vectorizer to documents
         tfidf_matrix = vectorizer.fit_transform(docs)

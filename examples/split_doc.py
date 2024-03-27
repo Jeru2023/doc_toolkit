@@ -14,6 +14,7 @@ for chunk in chunks:
     print('*** chunk {i} ***'.format(i=i))
     print('================================\n')
     print(f'chunk tags: {chunk["tags"]}')
+    print(f'chunk entities: {chunk["entities"]}')
     for paragraph in chunk['paragraphs']:
         print(f'*** paragraph index: {paragraph["index"]} ***')
         print(f'paragraph entities: {paragraph["entities"]}')
