@@ -1,11 +1,11 @@
-from sentence_splitter.sentence_cutter import SentenceCutter
 from cluster.topic_cluster import TopicCluster
 
 
-class Cluster2Node(SentenceCutter):
+class Cluster2Node():
     """
     定义节点类
     """
+
     def __init__(self, index, left=None, right=None):
         self.index: int = index  # 节点索引
         self.left = left  # 左子节点
@@ -18,6 +18,32 @@ class Cluster2Node(SentenceCutter):
 
     def __repr__(self):
         return f"Node(index={self.index}, word_cnt={self.word_cnt})"
+
+    @staticmethod
+    def paragraphs2docs(paragraphs):
+        """将paragraphs转换为docs格式，用于聚类入参"""
+        # paragraphs.sort(key=lambda x: x['index'])
+        docs = [''.join([sentence['text'] for sentence in paragraph['sentences']]) for paragraph in paragraphs]
+        return docs
+
+    def cut(self, branch, chunk_size=2000):
+        """
+        从任一节点递归遍历，做2000字内切分
+        """
+        if branch.word_cnt <= chunk_size or len(branch.leafs) <= 1:
+            return [[node.data for node in branch.leafs]]
+        return self.cut(branch.left, chunk_size) + self.cut(branch.right, chunk_size)
+
+    def to_json(self, chunk_size=2000):
+        return [{
+            'indexs': [node['index'] for node in chunk],
+            'paragraphs': chunk}
+            for chunk in self.cut(self, chunk_size=chunk_size)]
+
+    def to_text(self, chunk_size=2000):
+        return [
+            '\n'.join(self.paragraphs2docs(chunk))
+            for chunk in self.cut(self, chunk_size=chunk_size)]
 
 
 class Cluster2Tree:
@@ -35,7 +61,7 @@ class Cluster2Tree:
         docs = [''.join([sentence['text'] for sentence in paragraph['sentences']]) for paragraph in paragraphs]
         return docs
 
-    def build_cluster_tree(self, paragraphs, chunk_size=2000):
+    def build_cluster_tree(self, paragraphs):
         """
         构建链表: a -> b, c
         [[ 0,  1,  0.2,  2,]
@@ -82,19 +108,20 @@ class Cluster2Tree:
 
         # 聚类树root生成
         root = nodes_dict.popitem()[1]
+        return root
 
-        return [{
-            'indexs': [node['index'] for node in chunk],
-            'paragraphs': chunk}
-            for chunk in self.cut(root, chunk_size=chunk_size)]
+    #     return [{
+    #         'indexs': [node['index'] for node in chunk],
+    #         'paragraphs': chunk}
+    #         for chunk in self.cut(root, chunk_size=chunk_size)]
 
-    def cut(self, branch, chunk_size=2000):
-        """
-        从任一节点递归遍历，做2000字内切分
-        """
-        if branch.word_cnt <= chunk_size or len(branch.leafs) <= 1:
-            return [[node.data for node in branch.leafs]]
-        return self.cut(branch.left) + self.cut(branch.right)
+    # def cut(self, branch, chunk_size=2000):
+    #     """
+    #     从任一节点递归遍历，做2000字内切分
+    #     """
+    #     if branch.word_cnt <= chunk_size or len(branch.leafs) <= 1:
+    #         return [[node.data for node in branch.leafs]]
+    #     return self.cut(branch.left) + self.cut(branch.right)
 
 
 if __name__ == '__main__':
@@ -104,4 +131,5 @@ if __name__ == '__main__':
     # 构建链表
     ct = Cluster2Tree()
     # 打印根节点信息
-    print(ct.build_cluster_tree(paragraphs))
+    print(ct.build_cluster_tree(paragraphs).to_json(chunk_size=2000))
+    print(ct.build_cluster_tree(paragraphs).to_text(chunk_size=2000))
