@@ -32,5 +32,5 @@ class EntityExtractor:
 
 if __name__ == '__main__':
     extractor = EntityExtractor()
-    texts = '国金证券股份有限公司首次公开发行股票并在创业板上市'
+    texts = '近日三星堆再次发掘出一批新的文物'
     print(extractor.extract(texts))

@@ -1,5 +1,5 @@
 # coding=utf-8
-from gensim.models import Word2Vec
+# coding=utf-8
 from gensim.models import KeyedVectors
 
 model = KeyedVectors.load('../models/word2vec/tencent-ailab-embedding-zh-d200-v0.2.0-s.bin')   #用模型
@@ -10,3 +10,4 @@ for i in range(10):
     res = model.most_similar(testwords[i])
     print(testwords[i])
     print(res)
+

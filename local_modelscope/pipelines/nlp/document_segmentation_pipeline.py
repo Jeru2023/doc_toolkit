@@ -64,16 +64,13 @@ class DocumentSegmentationPipeline(Pipeline):
         self.mode = 'coarse'
         self.sc = SentenceCutter()
 
-    def __call__(
-            self, documents: Union[List[List[str]], List[str],
-            str]) -> Dict[str, Any]:
+    def __call__(self, documents: Union[List[List[str]], List[str], str]) -> Dict[str, Any]:
         output = self.predict(documents)
         output = self.postprocess(output)
         return output
 
     def predict(
-            self, documents: Union[List[List[str]], List[str],
-            str]) -> Dict[str, Any]:
+            self, documents: Union[List[List[str]], List[str], str]) -> Dict[str, Any]:
         pred_samples = self.cut_documents(documents)
 
         if self.model_cfg['level'] == 'topic':

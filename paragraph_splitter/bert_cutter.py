@@ -9,16 +9,16 @@ from tools.utils import timer
 
 class BertCutter:
 
-    @staticmethod
-    @timer
-    def cut(text):
-        p = pipeline(
+    def __init__(self):
+        self.p = pipeline(
             task=Tasks.document_segmentation,
-            # task=Tasks.document_segmentation,
             model='damo/nlp_bert_document-segmentation_chinese-base')
 
+    @timer
+    def cut(self, text):
+
         text = text.replace('\n', '')
-        output = p(documents=text)['text']
+        output = self.p(documents=text)['text']
         paragraphs = [p.strip() for p in output.split('\n\t') if p.strip()]
 
         return paragraphs
@@ -29,8 +29,23 @@ if __name__ == '__main__':
 
     from tools import utils
 
-    doc_name = '../examples/中创股份研报.txt'
+    doc_name = '../examples/新闻原始数据底层.txt'
     doc = utils.load_text(doc_name)
 
     results = bc.cut(doc)
     print(results)
+
+    doc_name = '../examples/新闻原始数据底层.txt'
+    doc = utils.load_text(doc_name)
+
+    results = bc.cut(doc)
+    print(results)
+
+    doc_name = '../examples/新闻原始数据底层.txt'
+    doc = utils.load_text(doc_name)
+
+    results = bc.cut(doc)
+    print(results)
+
+
+

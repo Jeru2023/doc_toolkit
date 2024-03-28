@@ -9,8 +9,8 @@ from tools.utils import timer
 class TopicCluster:
 
     @staticmethod
-    def tokenizer(doc):
-        text = re.sub('\W*', '', ''.join(doc))
+    def tokenizer(docs):
+        text = re.sub('\W*', '', ''.join(docs))
         words = jieba.posseg.cut(text)
 
         POS = ('n', 'nz', 'ns', 'nt', 'nr', 'l')

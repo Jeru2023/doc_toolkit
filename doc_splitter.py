@@ -34,11 +34,34 @@ class DocSplitter:
                 sentence['entity_subject'] = entity_subject
                 sentence['coref_subject'] = coref_subject
 
-    def append_tags_to_chunk(self, chunks):
+    def append_tags_to_chunk(self, doc, chunks):
+        paragraphs = [chunk["paragraphs"] for chunk in chunks]
+        flattened_list = [item for sublist in paragraphs for item in sublist]
+        docs = self.merge_paragraph_text(flattened_list)
+
+        # docs = self.chunk_cluster_tree.paragraphs2docs(flattened_list)
+        tfidf_matrix = self.topic_cluster.get_tfidf_matrix(docs)
+
+        vocab = self.topic_cluster.tokenizer(docs)
+
+        i = 0
         for chunk in chunks:
-            chunk_text = self.merge_paragraph_text(chunk['paragraphs'])
-            tags = self.tag_extractor.extract(''.join(chunk_text), extract_mode='text_rank', top_k=10)
-            chunk['tags'] = tags
+            # 提取当前 chunk 的 TF-IDF 向量
+            chunk_tfidf = tfidf_matrix[:, chunk.start:chunk.end]
+
+            # 计算每个词在当前 chunk 中的 TF-IDF 权重之和
+            chunk_weights = chunk_tfidf.sum(axis=0).A1
+
+            # 获取前 10 个关键词的索引
+            top_keywords_indices = chunk_weights.argsort()[-10:][::-1]
+
+            # 根据索引获取对应的关键词
+            top_keywords = [vocab[idx] for idx in top_keywords_indices]
+
+            # chunk_text = self.merge_paragraph_text(chunk['paragraphs'])
+            # tags = self.tag_extractor.extract(''.join(chunk_text), extract_mode='tfidf', top_k=10)
+            chunk['tags'] = top_keywords
+            i += 1
 
     @staticmethod
     @timer
@@ -96,8 +119,10 @@ class DocSplitter:
             chunk['entities'] = [dict(entities)]
 
     def split(self, doc, chunk_size=1000, with_entities=True, with_tags=True):
+        # paragraph_texts as a list of text
+        paragraph_texts = self.paragraph_cutter.cut(doc.replace('\n', ''))
         # paragraphs as a list of dict
-        paragraphs = self.paragraph_cutter.cut(doc.replace('\n', ''))
+        paragraphs = self.paragraph_cutter.get_paragraphs_node(paragraph_texts)
 
         if with_entities:
             self.append_metadata_to_sentence(paragraphs)
@@ -110,7 +135,7 @@ class DocSplitter:
             self.merge_paragraph_entity_to_chunk(chunks)
 
         if with_tags:
-            self.append_tags_to_chunk(chunks)
+            self.append_tags_to_chunk(doc, chunks)
 
         return chunks
 

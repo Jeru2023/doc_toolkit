@@ -35,7 +35,7 @@ class ParagraphCutter:
         :param text: text to be cut
         :param split_mode: 'bert', 'natural' or 'brutal'
         :param para_size: applicable only for 'brutal'
-        :return: a list of dictionaries, each dictionary represents a paragraph
+        :return: a list of paragraph text
         """
 
         if split_mode == 'bert':
@@ -51,11 +51,19 @@ class ParagraphCutter:
             # raise exception of error mode param
             raise Exception('error split_mode param provided, should be bert, natural or brutal')
 
-        chunks = []
+        return paragraphs
+
+    @timer
+    def get_paragraphs_node(self, paragraphs):
+        """
+        :param paragraphs: a list of paragraph text
+        :return: a list of dictionaries, each dictionary represents a paragraph
+        """
+        nodes = []
         for index, paragraph in enumerate(paragraphs):
-            chunk = self.fill_paragraph(index)
-            chunk.update({"sentences": self.fill_sentences(paragraph)})
+            node = self.fill_paragraph(index)
+            node.update({"sentences": self.fill_sentences(paragraph)})
 
-            chunks.append(chunk)
+            nodes.append(node)
 
-        return chunks
+        return nodes
